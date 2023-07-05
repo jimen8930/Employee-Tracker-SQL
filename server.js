@@ -150,7 +150,36 @@ startApp ();
   startApp();
   }
 
-  
+  async function updateEmployee (){
+    const update = await db.query('Select * FROM employee');
+
+    const roleData = await inquirer.prompt ([
+      {
+        type: 'list',
+        name: 'employeeId',
+        message: 'Select an employee to update:',
+        choices: employees.map((employee) => ({
+          name: `${employee.first_name} ${employee.last_name}`,
+          value: employee.id,
+        })),
+      },
+      // Other fields to update (e.g., new role)
+      {
+        type: 'list',
+        name: 'roleId',
+        message: "Select the employee's new role:",
+        choices: roles.map((role) => ({
+          name: role.title,
+          value: role.id,
+        })),
+      },
+    ])};
+
+    const {employeeId, roleId} = employeeData;
+    await db.query('Update employee SET role_id = ? where id = ?', [roleId, employeeId]);
+    console.log('Employee role updated succcesfully!');
+    startApp ();
+    
 
   async function addRole () {
     const departments = await db.query('SELECT * FROM department');
