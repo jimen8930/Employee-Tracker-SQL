@@ -149,3 +149,41 @@ startApp ();
   console.log('Employee added successfully!');
   startApp();
   }
+
+  
+
+  async function addRole () {
+    const departments = await db.query('SELECT * FROM department');
+
+    const roleData = await inquirer.prompt ([
+      {
+        name: "title",
+        type: "input",
+        message: "Enter the title of the role. "
+      },
+      {
+        name: "salary",
+        type: "number",
+        message: "Enter the role's salary. "
+      },
+    {
+      type: 'list',
+      name: 'departmentId',
+      message: "Select the department for the role:",
+      choices: departments.map((department) => ({
+        name: department.name,
+        value: department.id,
+        })),
+    },
+  ]);
+
+  const { title, salary, departmentId} = roleData;
+
+  await db.query(
+    'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)',
+    [title, salary, departmentId]
+  );
+
+  console.log('Role added successfully!');
+  startApp();
+  }
