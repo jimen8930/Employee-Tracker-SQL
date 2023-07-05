@@ -107,12 +107,12 @@ startApp ();
 
     const employeeData = await inquirer.prompt ([
       {
-        name: "firstname",
+        name: "firstName",
         type: "input",
         message: "Enter their first name "
       },
       {
-        name: "lastname",
+        name: "lastName",
         type: "input",
         message: "Enter their last name "
       },
