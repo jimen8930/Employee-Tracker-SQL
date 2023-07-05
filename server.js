@@ -73,7 +73,7 @@ startApp ();
   }
   
   async function viewEmployees () {
-    const sql = `SELECT employee.id, employee.first_name AS "first name", employee.last_name 
+    const employees = await db.query (`SELECT employee.id, employee.first_name AS "first name", employee.last_name 
     AS "last name", role.title, department.name AS department, role.salary, 
     concat(manager.first_name, " ", manager.last_name) AS manager
     FROM employee
@@ -82,5 +82,23 @@ startApp ();
     LEFT JOIN department
     ON role.department_id = department.id
     LEFT JOIN employee manager
-    ON manager.id = employee.manager_id`
+    ON manager.id = employee.manager_id`);
+    console.table(employees);
+    startApp ();
   }
+
+  async function addDepartment () {
+    const departmentData = await inquirer.prompt ([
+      {
+        type: 'input',
+        name: 'departmentName',
+        message: 'Enter the name of the department:',
+      },
+    ]);
+    const { departmentName } = departmentData;
+    await db.query('INSERT INTO department (name) VALUES (?)', [departmentName]);
+    console.log('Department added successfully!');
+    startApp();
+  }
+
+  
