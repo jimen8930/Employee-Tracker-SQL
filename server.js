@@ -150,10 +150,13 @@ startApp ();
   startApp();
   }
 
-  async function updateEmployee (){
-    const update = await db.query('Select * FROM employee');
+  async function updateEmployee() {
+    // Retrieve employee data
+    const employees = await db.query('SELECT * FROM employee');
+    const roles = await db.query('SELECT * FROM role');
 
-    const roleData = await inquirer.prompt ([
+    // Prompt user to select an employee to update
+    const employeeData = await inquirer.prompt([
       {
         type: 'list',
         name: 'employeeId',
@@ -173,13 +176,17 @@ startApp ();
           value: role.id,
         })),
       },
-    ])};
-
-    const {employeeId, roleId} = employeeData;
-    await db.query('Update employee SET role_id = ? where id = ?', [roleId, employeeId]);
-    console.log('Employee role updated succcesfully!');
-    startApp ();
-    
+    ]);
+  
+    const { employeeId, roleId } = employeeData;
+  
+    // Update employee's role
+    await db.query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]);
+  
+    console.log('Employee role updated successfully!');
+    startApp();
+  }
+  
 
   async function addRole () {
     const departments = await db.query('SELECT * FROM department');
