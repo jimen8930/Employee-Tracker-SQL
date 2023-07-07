@@ -24,7 +24,8 @@ Once node.js v16 is installed, in the terminal, utilize the command npm init -y 
 Next, use the terminal to run the command npm i to install the dependencies associated with this application 
 To run the server, within the terminal, type the command npm start or node server.js.
 
-Once the server is running, users can then access the back end of the application within the browser to observe full functionality of the site.
+Once the server is running, users can then access the back end of the application within the browser to observe full functionality of the site. Here is the link for the tutorial:
+https://youtu.be/aahISZNuGmE
 
 ## Usage
 This application is powered by mySQL workbench and MAMP meaning for it to function properly, there needs to be a server running in the background. To start the server, navigate to the directory of the application, install all dependencies (npm i), then type the command npm start (or node server.js). The inquirer will prompt a series of questions. The user will choose and input information needed to tarck employees. 
