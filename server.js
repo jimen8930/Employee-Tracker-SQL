@@ -1,8 +1,11 @@
+// Import the connection file to connect to SQL
 const db=require('./db/connection');
+// Import inquirer 
 const inquirer =require('inquirer');
 const util =require('util');
-
+// A query function that returns a promise
 db.query=util.promisify(db.query)
+// Function to start inquirer to prompt the questions for the user
 function startApp() {
     inquirer
       .prompt([
@@ -22,7 +25,9 @@ function startApp() {
           ],
         },
       ])
+      // Then is a method to call on the promises 
       .then((options) => {
+        // Switch statements to check the values 
         switch (options.choice) {
           case 'View all departments':
             viewDepts()
@@ -58,20 +63,23 @@ function startApp() {
         }
       })
   }
+  // An async function to view departments and it will await the results db.query function
   async function viewDepts() {
 const department= await db.query('select * from department');
 console.table(department);
+// Callback function to start the app with the prompt of questions 
 startApp ();
   }
 
   startApp ();
-
+// An async function to view roles and it will await the results db.query function
   async function viewRoles () {
     const roles = await db.query ('select role.id, role.title, role.salary, department.name from role join department on role.department_id = department.id');
     console.table(roles);
     startApp ();
   }
   
+  // An async function to view employees and it will await the results db.query function
   async function viewEmployees () {
     const employees = await db.query (`SELECT employee.id, employee.first_name AS "first name", employee.last_name 
     AS "last name", role.title, department.name AS department, role.salary, 
@@ -86,7 +94,7 @@ startApp ();
     console.table(employees);
     startApp ();
   }
-
+// An async function to add a department and it will await the results db.query function
   async function addDepartment () {
     const departmentData = await inquirer.prompt ([
       {
@@ -100,8 +108,9 @@ startApp ();
     console.log('Department added successfully!');
     startApp();
   }
-
+// An async function to add an employee and it will await the results db.query function
   async function addEmployee () {
+    // Selects from the role and employee from the SQL 
     const roles = await db.query('SELECT * FROM role');
   const managers = await db.query('SELECT * FROM employee');
 
@@ -140,7 +149,7 @@ startApp ();
   ]);
 
   const { firstName, lastName, roleId, managerId } = employeeData;
-
+// The query function to insert into the employee database 
   await db.query(
     'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
     [firstName, lastName, roleId, managerId]
@@ -149,7 +158,7 @@ startApp ();
   console.log('Employee added successfully!');
   startApp();
   }
-
+// Async function to update the employee database 
   async function updateEmployee() {
     // Retrieve employee data
     const employees = await db.query('SELECT * FROM employee');
@@ -223,3 +232,5 @@ startApp ();
   console.log('Role added successfully!');
   startApp();
   }
+
+

@@ -1,3 +1,4 @@
+// Import mysql2 package 
 const mysql = require("mysql2");
 
 // Connect to database
@@ -8,6 +9,7 @@ const db = mysql.createConnection({
     // Your MySQL password
     password: 'root',
     database: "employeedb",
+    // Port for mySQL workbench
     port: 8889
 });
 
